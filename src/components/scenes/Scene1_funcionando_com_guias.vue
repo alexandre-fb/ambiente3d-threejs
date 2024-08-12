@@ -12,13 +12,7 @@ const getWebGL2ErrorMessage = WebGL.getWebGL2ErrorMessage().outerHTML;
 
 // Canvas container
 const scene1Container = ref(null);
-
 const clickInTransformController = ref(false);
-const currentTransformControlesMode = ref("translate");
-const hasSelectedObject = ref(false);
-
-const loading = ref(true);
-
 
 // Scene
 const scene = new THREE.Scene();
@@ -88,11 +82,11 @@ function createLights() {
   scene.add(lampLight1);
   scene.add(lampLight2);
 
-  // x3.add(lampLight1, {
-  //   label: "Lamp Light 1",
-  //   visible: false,
-  //   helper: { visible: true },
-  // });
+  x3.add(lampLight1, {
+    label: "Lamp Light 1",
+    visible: false,
+    helper: { visible: true },
+  });
 }
 createLights();
 
@@ -116,7 +110,7 @@ const createCabinet = () => {
   cabinetGuia = guia;
   cabinetGuia.name = "cabinetGuia";
   scene.add(cabinetGuia);
-  // x3.add(cabinetGuia, { label: "Cabinet Giua" });
+  x3.add(cabinetGuia, { label: "Cabinet Giua" });
   //end guia==============
 
   const loader = new GLTFLoader();
@@ -128,6 +122,7 @@ const createCabinet = () => {
 
       cabinet.traverse((child) => {
         if (child instanceof THREE.Mesh) {
+          console.log("cabinet é mesh");
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -138,7 +133,7 @@ const createCabinet = () => {
       cabinet.rotation.copy(cabinetGuia.rotation);
       scene.add(cabinet);
 
-      // x3.add(cabinet, { label: "Cabinet" });
+      x3.add(cabinet, { label: "Cabinet" });
       addEventListeners();
     },
 
@@ -165,7 +160,7 @@ const createSofa = () => {
   sofaGuia = guia;
   sofaGuia.name = "sofaGuia";
   scene.add(sofaGuia);
-  // x3.add(sofaGuia, { label: "Sofa Giua" });
+  x3.add(sofaGuia, { label: "Sofa Giua" });
   //end guia==============
 
   const loader = new GLTFLoader();
@@ -177,6 +172,7 @@ const createSofa = () => {
 
       sofa.traverse((child) => {
         if (child instanceof THREE.Mesh) {
+          console.log("sofa é mesh");
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -186,7 +182,7 @@ const createSofa = () => {
       sofa.position.copy(sofaGuia.position);
       sofa.rotation.copy(sofaGuia.rotation);
       scene.add(sofa);
-      // x3.add(sofa, { label: "Sofa" });
+      x3.add(sofa, { label: "Sofa" });
       addEventListeners();
     },
 
@@ -215,7 +211,7 @@ const createTvTable = () => {
   tvTableGuia = guia;
   tvTableGuia.name = "tvTableGuia";
   scene.add(tvTableGuia);
-  // x3.add(tvTableGuia, { label: "Tv Table Giua" });
+  x3.add(tvTableGuia, { label: "Tv Table Giua" });
   //end guia==============
 
   const loader = new GLTFLoader();
@@ -227,6 +223,7 @@ const createTvTable = () => {
 
       tvTable.traverse((child) => {
         if (child instanceof THREE.Mesh) {
+          console.log("sofa é mesh");
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -237,7 +234,7 @@ const createTvTable = () => {
       tvTable.rotation.copy(tvTableGuia.rotation);
       tvTable.scale.copy(tvTableGuia.scale);
       scene.add(tvTable);
-      // x3.add(tvTable, { label: "Tv Table" });
+      x3.add(tvTable, { label: "Tv Table" });
       addEventListeners();
     },
 
@@ -332,7 +329,7 @@ const createWalls = () => {
   wall2.rotation.y = -Math.PI / 2;
   wall2.receiveShadow = true;
   scene.add(wall2);
-  // x3.add(wall2, { label: "wall2" });
+  x3.add(wall2, { label: "wall2" });
 
   const wall3Geometry = new THREE.BoxGeometry(8, 3, 0.1);
   const wall3Material = innerWallTexture;
@@ -342,7 +339,7 @@ const createWalls = () => {
   wall3.rotation.y = -Math.PI / 2;
   wall3.receiveShadow = true;
   scene.add(wall3);
-  // x3.add(wall3, { label: "wall3" });
+  x3.add(wall3, { label: "wall3" });
 
   const wall4Geometry = new THREE.BoxGeometry(8, 3, 0.1);
   const wall4Material = innerWallTexture;
@@ -352,7 +349,7 @@ const createWalls = () => {
 
   wall4.receiveShadow = true;
   scene.add(wall4);
-  // x3.add(wall4, { label: "wall4" });
+  x3.add(wall4, { label: "wall4" });
 };
 
 createCabinet();
@@ -408,6 +405,8 @@ function limitPositionOnChange(object, floorSize) {
 function updateTransformsData(object, guia) {
   object.position.copy(guia.position);
   object.rotation.copy(guia.rotation);
+
+  console.log("object.rotation");
   object.scale.copy(guia.scale);
 }
 
@@ -439,7 +438,7 @@ transformControls.setMode("translate");
 scene.add(transformControls);
 
 // helpers
-// x3.add(camera, { open: false });
+x3.add(camera, { open: false });
 x3.orbitController.orbit.minPolarAngle = THREE.MathUtils.degToRad(0);
 x3.orbitController.orbit.maxPolarAngle = THREE.MathUtils.degToRad(85);
 x3.orbitController.orbit.minDistance = 0.05;
@@ -467,22 +466,6 @@ function onPointerMove(event) {
   }
 }
 
-function handleChangeControl() {
-  if (currentTransformControlesMode.value === "translate") {
-    transformControls.setMode("rotate");
-    transformControls.showY = true;
-    transformControls.showZ = false;
-    transformControls.showX = false;
-    currentTransformControlesMode.value = "rotate";
-  } else {
-    transformControls.setMode("translate");
-    transformControls.showY = false;
-    transformControls.showZ = true;
-    transformControls.showX = true;
-    currentTransformControlesMode.value = "translate";
-  }
-}
-
 function onPointerDown(event) {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -493,25 +476,43 @@ function onPointerDown(event) {
     false
   );
 
+  // console.log('isTransformControlsClicked()', isTransformControlsClicked())
+  console.log("clickInTransformController", clickInTransformController.value);
   function toogleTransformControls() {
     if (intersects.length > 0) {
       selectedObject = intersects[0].object;
       transformControls.attach(selectedObject);
-      hasSelectedObject.value = true;
     }
-    
+
+    console.log("event", event.target);
+    console.log("intersects", intersects);
     if (intersects.length === 0 && !clickInTransformController.value) {
       selectedObject = null;
       transformControls.detach();
-      hasSelectedObject.value = false;
     }
   }
 
+  // Chamar a função para alternar os controles de transformação
   toogleTransformControls();
   clickInTransformController.value = false
 }
 
-
+function onKeydown(event) {
+  switch (event.key) {
+    case "t":
+      transformControls.setMode("translate");
+      transformControls.showY = false;
+      transformControls.showZ = true;
+      transformControls.showX = true;
+      break;
+    case "r":
+      transformControls.setMode("rotate");
+      transformControls.showY = true;
+      transformControls.showZ = false;
+      transformControls.showX = false;
+      break;
+  }
+}
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -536,15 +537,13 @@ function animate() {
 }
 
 function addEventListeners() {
-  if (cabinet && sofa && tvTable) {
-    loading.value = false
+  if (cabinet && sofa) {
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("resize", onWindowResize);
+    window.addEventListener("keydown", onKeydown);
   }
 }
-
-
 
 onMounted(() => {
   if (scene1Container.value) {
@@ -555,29 +554,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="three-cotainer" v-if="!isWebGL2Available">
+  <div v-if="!isWebGL2Available">
     <div v-html="getWebGL2ErrorMessage"></div>
   </div>
-  <template v-else>
-    <div ref="scene1Container" class="scene1-container" v-show="!loading">
-      <div class="content-container">
-        <div class="controls-buttons" v-if="hasSelectedObject">
-          <button @pointerdown.stop="handleChangeControl">
-            <template v-if="currentTransformControlesMode === 'rotate'">
-              <img src="/icons/move.svg" alt="Mover" title="Mover">
-              <span>Mover</span>
-            </template>
-            <template v-else>
-              <img src="/icons/rotate-solid.svg" alt="Girar" title="Girar">
-              <span>Girar</span>
-            </template>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div v-show="loading" class="loading-indicator">
-    </div>
-  </template>
+  <div v-else ref="scene1Container" class="scene1-container"></div>
 </template>
 
 <style scoped>
@@ -586,79 +566,4 @@ onMounted(() => {
   height: 100vh;
   background-color: lightgray;
 }
-
-.three-cotainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  position: relative;
-}
-
-.content-container {
-  position: absolute;
-  z-index: 99;
-  bottom: 15px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.controls-buttons {
-  width: fit-content;
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.controls-buttons button {
-  color: white;
-  background: rgba(0, 0, 0, .5);
-  padding: 5px;
-  min-width: 50px;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  cursor: pointer;
-  transition: 150ms ease-in-out ;
-  opacity: .7;
-}
-
-.controls-buttons button:hover {
-  opacity: 1;
-}
-
-.controls-buttons button img {
-  width: 20px;
-}
-
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  background-color: rgb(51, 51, 51);
-}
-
-.loading-indicator::before {
-  content: "";
-  box-sizing: border-box;
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgb(255, 164, 66);
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 </style>
