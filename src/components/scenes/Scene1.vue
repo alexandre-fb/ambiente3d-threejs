@@ -121,7 +121,7 @@ const createCabinet = () => {
 
   const loader = new GLTFLoader();
   loader.load(
-    "/3d_objects/modern_cabinet.glb",
+    "/assets/3d_objects/modern_cabinet.glb",
     function (gltf) {
       cabinet = gltf.scene;
       cabinet.name = "cabinet";
@@ -170,7 +170,7 @@ const createSofa = () => {
 
   const loader = new GLTFLoader();
   loader.load(
-    "/3d_objects/sofa-aberto2.glb",
+    "/assets/3d_objects/sofa-aberto2.glb",
     function (gltf) {
       sofa = gltf.scene;
       sofa.name = "sofa";
@@ -220,7 +220,7 @@ const createTvTable = () => {
 
   const loader = new GLTFLoader();
   loader.load(
-    "/3d_objects/tv-table3.glb",
+    "/assets/3d_objects/tv-table3.glb",
     function (gltf) {
       tvTable = gltf.scene;
       tvTable.name = "tvTable";
@@ -269,15 +269,15 @@ let floor = null;
 const createFloor = () => {
   const textureLoader = new THREE.TextureLoader();
   const woodTexture = new THREE.MeshStandardMaterial({
-    map: textureLoader.load("/textures/woodfloor/Wood_Floor_012_basecolor.jpg"),
+    map: textureLoader.load("/assets/textures/woodfloor/Wood_Floor_012_basecolor.jpg"),
     normalMap: textureLoader.load(
-      "/textures/woodfloor/Wood_Floor_012_normal.jpg"
+      "/assets/textures/woodfloor/Wood_Floor_012_normal.jpg"
     ),
     roughnessMap: textureLoader.load(
-      "/textures/woodfloor/Wood_Floor_012_roughness.jpg"
+      "/assets/textures/woodfloor/Wood_Floor_012_roughness.jpg"
     ),
     aoMap: textureLoader.load(
-      "/textures/woodfloor/Wood_Floor_012_ambientOcclusion.jpg"
+      "/assets/textures/woodfloor/Wood_Floor_012_ambientOcclusion.jpg"
     ),
   });
 
@@ -299,20 +299,20 @@ const createWalls = () => {
   const textureLoader = new THREE.TextureLoader();
   const innerWallTexture = new THREE.MeshStandardMaterial({
     map: textureLoader.load(
-      "/textures/innerWall/Wall_Interior_001_basecolor.jpg"
+      "/assets/textures/innerWall/Wall_Interior_001_basecolor.jpg"
     ),
     normalMap: textureLoader.load(
-      "/textures/innerWall/Wall_Interior_001_normal.jpg"
+      "/assets/textures/innerWall/Wall_Interior_001_normal.jpg"
     ),
     roughnessMap: textureLoader.load(
-      "/textures/innerWall/Wall_Interior_001_roughness.jpg"
+      "/assets/textures/innerWall/Wall_Interior_001_roughness.jpg"
     ),
     aoMap: textureLoader.load(
-      "/textures/innerWall/Wall_Interior_001_ambientOcclusion.jpg"
+      "/assets/textures/innerWall/Wall_Interior_001_ambientOcclusion.jpg"
     ),
   });
 
-  const wall1Geometry = new THREE.BoxGeometry(8, 3, 0.1);
+  const wall1Geometry = new THREE.BoxGeometry(6, 3, 0.1);
   const wall1Material = innerWallTexture;
   // const wall1Material = new THREE.MeshToonMaterial({
   //   color: 0x2bbac2,
@@ -324,7 +324,7 @@ const createWalls = () => {
   wall1.receiveShadow = true;
   scene.add(wall1);
 
-  const wall2Geometry = new THREE.BoxGeometry(8, 3, 0.1);
+  const wall2Geometry = new THREE.BoxGeometry(6, 3, 0.1);
   const wall2Material = innerWallTexture;
   wall2 = new THREE.Mesh(wall2Geometry, wall2Material);
   wall2.position.y = 1.5;
@@ -334,7 +334,7 @@ const createWalls = () => {
   scene.add(wall2);
   // x3.add(wall2, { label: "wall2" });
 
-  const wall3Geometry = new THREE.BoxGeometry(8, 3, 0.1);
+  const wall3Geometry = new THREE.BoxGeometry(6, 3, 0.1);
   const wall3Material = innerWallTexture;
   wall3 = new THREE.Mesh(wall3Geometry, wall3Material);
   wall3.position.y = 1.5;
@@ -344,7 +344,7 @@ const createWalls = () => {
   scene.add(wall3);
   // x3.add(wall3, { label: "wall3" });
 
-  const wall4Geometry = new THREE.BoxGeometry(8, 3, 0.1);
+  const wall4Geometry = new THREE.BoxGeometry(6, 3, 0.1);
   const wall4Material = innerWallTexture;
   wall4 = new THREE.Mesh(wall4Geometry, wall4Material);
   wall4.position.y = 1.5;
@@ -499,7 +499,7 @@ function onPointerDown(event) {
       transformControls.attach(selectedObject);
       hasSelectedObject.value = true;
     }
-    
+
     if (intersects.length === 0 && !clickInTransformController.value) {
       selectedObject = null;
       transformControls.detach();
@@ -564,11 +564,11 @@ onMounted(() => {
         <div class="controls-buttons" v-if="hasSelectedObject">
           <button @pointerdown.stop="handleChangeControl">
             <template v-if="currentTransformControlesMode === 'rotate'">
-              <img src="/icons/move.svg" alt="Mover" title="Mover">
+              <img src="/assets/icons/move.svg" alt="Mover" title="Mover">
               <span>Mover</span>
             </template>
             <template v-else>
-              <img src="/icons/rotate-solid.svg" alt="Girar" title="Girar">
+              <img src="/assets/icons/rotate-solid.svg" alt="Girar" title="Girar">
               <span>Girar</span>
             </template>
           </button>
